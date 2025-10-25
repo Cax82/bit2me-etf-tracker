@@ -1,0 +1,33 @@
+name: Daily Tracker
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Set timezone
+        run: |
+          echo 'Europe/Madrid' | sudo tee /etc/timezone
+          sudo dpkg-reconfigure -f noninteractive tzdata
+      - name: Run tracker
+        env:
+          BIT2ME_API_KEY: ${{ secrets.BIT2ME_API_KEY }}
+          BIT2ME_API_SECRET: ${{ secrets.BIT2ME_API_SECRET }}
+        run: |
+          python main.py
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-report
+          path: reports/latest.html
+

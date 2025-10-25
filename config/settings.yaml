@@ -1,0 +1,11 @@
+etfs:
+  tickers: ["SPY", "QQQ", "IEMB.MI", "EFA", "IE00B4L5Y983.IR"]
+  lookback_days: 60
+  vol_window: 30
+  currency: "EUR"
+reports:
+  title: "Daily Bit2Me + ETF Tracker"
+  include_charts: false
+output:
+  data_dir: "data"
+  reports_dir: "reports"
